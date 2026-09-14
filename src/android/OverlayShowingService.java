@@ -1,5 +1,3 @@
-//package com.romellfudi.ussdlibrary;
-
 package com.ramymokako.plugin.ussd.android;
 
 import android.app.Service;

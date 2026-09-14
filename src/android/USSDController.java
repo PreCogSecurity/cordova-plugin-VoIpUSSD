@@ -1,5 +1,3 @@
-//package com.romellfudi.ussdlibrary;
-
 package com.ramymokako.plugin.ussd.android;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
@@ -128,12 +126,9 @@ public class USSDController implements USSDInterface, USSDApi {
     }
 
     private void dialUp(String ussdPhoneNumber, int simSlot) {
-        if (map == null || (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN))) {
-            this.callbackInvoke.over("Bad Mapping structure");
-            return;
-        }
-        if (ussdPhoneNumber.isEmpty()) {
-            this.callbackInvoke.over("Bad ussd number");
+        String validationError = validateDialUpArguments(ussdPhoneNumber, map);
+        if (validationError != null) {
+            this.callbackInvoke.over(validationError);
             return;
         }
         String uri = Uri.encode("#");
@@ -143,6 +138,25 @@ public class USSDController implements USSDInterface, USSDApi {
         if (uriPhone != null)
             isRunning = true;
         this.context.startActivity(getActionCallIntent(uriPhone, simSlot));
+    }
+
+    /**
+     * Validates the arguments of a USSD dial-up request before any Android
+     * framework call is made. Kept free of Android dependencies so it can be
+     * unit-tested on a plain JVM.
+     *
+     * @param ussdPhoneNumber the USSD number to dial
+     * @param map             the login/error keyword map
+     * @return a human-readable error message, or {@code null} when the arguments are valid
+     */
+    static String validateDialUpArguments(String ussdPhoneNumber, HashMap<String, HashSet<String>> map) {
+        if (map == null || (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN))) {
+            return "Bad Mapping structure";
+        }
+        if (ussdPhoneNumber == null || ussdPhoneNumber.isEmpty()) {
+            return "Bad ussd number";
+        }
+        return null;
     }
 
     /**
