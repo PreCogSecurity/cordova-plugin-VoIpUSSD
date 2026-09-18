@@ -1,5 +1,3 @@
-//package com.romellfudi.ussdlibrary;
-
 package com.ramymokako.plugin.ussd.android;
 
 import android.accessibilityservice.AccessibilityService;
@@ -7,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -23,8 +20,6 @@ import java.util.List;
  */
 public class USSDService extends AccessibilityService {
 
-    private static String TAG = USSDService.class.getSimpleName();
-
     private static AccessibilityEvent event;
 
     /**
@@ -35,14 +30,16 @@ public class USSDService extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         this.event=event;
 
-        Log.d(TAG, "onAccessibilityEvent");
+        USSDLog.d("onAccessibilityEvent");
 
-        Log.d(TAG, String.format(
+        USSDLog.d(String.format(
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
 
-        if(USSDController.instance  == null || !USSDController.instance.isRunning) { return; }
+        if (USSDController.instance == null || !USSDController.instance.isRunning) {
+            return;
+        }
 
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
@@ -199,7 +196,7 @@ public class USSDService extends AccessibilityService {
      */
     @Override
     public void onInterrupt() {
-        Log.d(TAG, "onInterrupt");
+        USSDLog.d("onInterrupt");
     }
 
     /**
@@ -208,6 +205,6 @@ public class USSDService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        Log.d(TAG, "onServiceConnected");
+        USSDLog.d("onServiceConnected");
     }
 }

@@ -1,5 +1,3 @@
-//package com.romellfudi.ussdlibrary;
-
 package com.ramymokako.plugin.ussd.android;
 
 import android.content.Context;
@@ -8,7 +6,6 @@ import android.graphics.Movie;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import java.io.FileNotFoundException;
@@ -89,7 +86,7 @@ public class GifImageView extends View {
             mInputStream = mContext.getContentResolver().openInputStream(uri);
             init();
         } catch (FileNotFoundException e) {
-            Log.e("GIfImageView", "File not found");
+            USSDLog.e("GifImageView: file not found");
         }
     }
 }
